@@ -7,7 +7,6 @@ import { Dish } from '../shared/dish';
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
-
   
   dishes: Dish[] = [
     {

@@ -6,7 +6,7 @@
     fxLayoutGap="10px" 
     fxLayoutGap.xs="0">
 
-  <div fxFlex="40">
+  <div fxFlex="40" *ngIf="dish">
       <mat-card>
         <mat-card-header>
           <mat-card-title>
@@ -28,8 +28,7 @@
       </mat-card>
     </div>
 
-  <div fxFlex="40">
-    
+  <div fxFlex="40" *ngIf="dish">    
     <h3>Comments</h3>
 
     <mat-list *ngFor="let item of dish.comments">
@@ -37,8 +36,6 @@
         {{ item.comment}} {{item.rating}} Starts -- {{item.author}} {{ item.date | date: 'MMM d, y' }}
       </mat-list-item>
     </mat-list>
-
-  
 
   </div>
 
