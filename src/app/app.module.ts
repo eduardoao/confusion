@@ -22,6 +22,7 @@ import { FooterComponent } from './footer/footer.component';
 import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
 import { ContactComponent } from './contact/contact.component';
+import { PromotionService } from './services/promotion.service';
 
 
 
@@ -47,7 +48,7 @@ import { ContactComponent } from './contact/contact.component';
     MatCardModule,
     MatButtonModule
   ],
-  providers: [DishService],
+  providers: [DishService, PromotionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
