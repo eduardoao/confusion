@@ -1,6 +1,6 @@
 #Badge
 
-https://dev.azure.com/AzureDevOpsEAO/ConfusionStaticWebApp/_apis/build/status/ConfusionStaticWebApp%20-%20CI?branchName=main
+[![Build Status](https://dev.azure.com/AzureDevOpsEAO/ConfusionStaticWebApp/_apis/build/status/ConfusionStaticWebApp%20-%20CI?branchName=main)](https://dev.azure.com/AzureDevOpsEAO/ConfusionStaticWebApp/_build/latest?definitionId=9&branchName=main)
 
 # ConFusion
 
