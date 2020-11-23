@@ -11,8 +11,7 @@
     "prod-build-dev": "ng build --prod --build-optimizer"
   },
   "private": true,
-  "dependencies": {
-    "@angular/animations": "^6.1.7",
+  "dependencies": {    
     "@angular/cdk": "^6.4.7",
     "@angular/common": "~9.1.7",
     "@angular/compiler": "~9.1.7",
