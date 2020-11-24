@@ -27,8 +27,3 @@ steps:
     workingDir: src
     customEndpoint: 
 
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)
-    ArtifactName: 'drop'
