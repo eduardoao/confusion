@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build --prod",
+    "start": "ng serve",   
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "prod-build-dev": "ng build --prod --build-optimizer"
+    "prod-build-dev": "ng build --prod --build-optimizer",
+    "build": "ng build --prod --output-path=\".dist/web\""
   },
   "private": true,
   "dependencies": {
