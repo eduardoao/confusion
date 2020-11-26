@@ -21,9 +21,13 @@
         </mat-card-content>
   
         <mat-card-actions>
+          <button mat-button [routerLink]="['/dishedetail', prev]"><span class="fa fa-chevron-left fa-lg">PREV</span></button>
           <button mat-button>LIKE</button>
           <button mat-button>SHARE</button>
           <button mat-button (click)="goBack()">BACK</button>
+          <span class="flex-spacer"></span>
+          <button mat-button [routerLink]="['/dishedetail', next]">NEXT</button>
+
         </mat-card-actions>
   
       </mat-card>

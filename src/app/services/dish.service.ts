@@ -12,7 +12,11 @@ import { promise } from 'protractor';
 export class DishService {
 
   constructor() { }
- 
+
+  getDishIds(): Observable<string[] | any> {
+    return of(DISHEs.map(dish => dish.id ));
+  }
+
   getDishes(): Observable<Dish[]> {
     return of(DISHEs).pipe(delay(2000));
   }
