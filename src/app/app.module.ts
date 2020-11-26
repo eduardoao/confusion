@@ -1,3 +1,4 @@
+import { Observable, of } from 'rxjs';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -68,7 +69,7 @@ import { LoginComponent } from './login/login.component';
     MatSlideToggleModule,
     FormsModule,
     ReactiveFormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule  
   ],
 
   entryComponents: [

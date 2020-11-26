@@ -22,7 +22,7 @@ export class MenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.dishService.getDishes()
-      .then(dishes => this.dishers = dishes);
+      .subscribe(dishes => this.dishers = dishes);
   }
 
   onSelect(dish: Dish){
