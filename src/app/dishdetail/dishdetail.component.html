@@ -48,4 +48,50 @@
     <mat-spinner></mat-spinner><h4>Loading . . . Please Wait</h4>
   </div>
 
+  <div [hidden]="dish">
+    <div fxFlex fxFlexOffset="20px" class="form-size">
+      <h3>Send us your Comment</h3>      
+      <!--Task 3 Week 11/27/2020-->  
+      <p>{{ commentForm.value | json }} {{ commentForm.status | json }}</p>
+      
+      <form id="formComment" novalidate [formGroup]="commentForm"  (ngSubmit)="onSubmit()" >
+        <p>
+          <mat-form-field class="half-width">
+            <input matInput formControlName="name" placeholder="Name" type="text" required >
+            <mat-error *ngIf="formErrors.name">{{formErrors.name}}</mat-error>
+          </mat-form-field>         
+        </p>
+        <p>
+          <mat-slider
+          formControlName="rating"
+          class="example-margin"
+          [disabled]="disabled"
+          [invert]="invert"
+          [max]="max"
+          [min]="min"
+          [step]="step"
+          [thumbLabel]="thumbLabel"
+          [tickInterval]="getSliderTickInterval()"
+          [(ngModel)]="value"
+          [vertical]="vertical"
+          >
+
+      </mat-slider>
+      <mat-error *ngIf="formErrors.rating">{{formErrors.rating}}</mat-error>
+       
+
+        </p> 
+        <p>
+          <mat-form-field class="full-width">
+            <textarea matInput formControlName="comment" placeholder="Your Comments" rows=12></textarea>
+            <mat-error *ngIf="formErrors.comment">{{formErrors.comment}}</mat-error>            
+          </mat-form-field>
+        </p>
+        <button type="submit" mat-button class="background-primary text-floral-white">Submit</button>
+      </form>
+    
+
+    </div>
+</div>
+
 </div>
