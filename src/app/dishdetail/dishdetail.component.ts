@@ -17,6 +17,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 export class DishdetailComponent implements OnInit {
 
+  dishcopy: Dish;
   @ViewChild('fform') commentFormDirective;
   @Input()
   dish: Dish;
@@ -25,6 +26,7 @@ export class DishdetailComponent implements OnInit {
   next: string;
   commentForm: FormGroup;
   comment: Comment;
+  errMess: string;
 
   autoTicks = false;
   disabled = false;
@@ -61,7 +63,7 @@ export class DishdetailComponent implements OnInit {
     }
   };
 
-
+  
   constructor(private dishservice: DishService,
               private route: ActivatedRoute,
               private location: Location,
@@ -71,10 +73,18 @@ export class DishdetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.dishservice.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
-    this.route.params.pipe(switchMap((params: Params) => this.dishservice.getDish(params['id'])))
-    .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); });
 
-    
+    // this.route.params
+    // .pipe(switchMap((params: Params) => this.dishservice.getDish(params['id'])))
+    // .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); },
+    // errmess => this.errMess = (errmess as any) );
+
+    this.route.params
+    .pipe(switchMap((params: Params) => this.dishservice.getDish(params['id'])))
+    .subscribe(dish => { this.dish = dish; this.dishcopy = dish; this.setPrevNext(dish.id); },
+      errmess => this.errMess = (errmess as any) );
+
+
   }
   setPrevNext(dishId: string) {
     const index = this.dishIds.indexOf(dishId);
@@ -102,30 +112,36 @@ export class DishdetailComponent implements OnInit {
         }
       }
     }
-    const name = form.get('name').value;
-    const ratin = form.get('rating').value;
-    const commentItem = form.get('comment').value;
-    if (form.valid ) {
-      console.log(name + ratin + commentItem);
-      this.dish.comments.push({ author: name, comment: commentItem, rating : ratin, date: Date().toString()});
-    }
 
   }
   createForm() {
 
     this.commentForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)] ],
-      comment: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)] ],
+      comment: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(500)] ],
       rating: [1, [Validators.required, Validators.minLength(1)]]});
 
     this.commentForm.valueChanges
     .subscribe(data => this.onValueChanged(data));
     this.onValueChanged();
 
+    this.commentForm.statusChanges
+    .subscribe(val => this.onFormValidation(val));
+    this.onFormValidation('');
+
   }
   onSubmit(){
+    this.onFormValidation('');
     this.comment = this.commentForm.value;
     console.log(this.comment);
+
+    this.dishcopy.comments.push(this.comment);
+    this.dishservice.putDish(this.dishcopy)
+      .subscribe(dish => {
+        this.dish = dish; this.dishcopy = dish;
+      },
+      errmess => { this.dish = null; this.dishcopy = null; this.errMess = (errmess as any); });
+
     this.commentForm.reset({
       name: '',
       Comment: '',
@@ -141,16 +157,30 @@ export class DishdetailComponent implements OnInit {
     return 0;
   }
 
-  lostFocus() {
-    console.log('form is valid');
-    console.log(this.dish.comments);
-    const form = this.commentForm;
-    const name = form.get('name').value;
-    const ratin = form.get('rating').value;
-    const commentItem = form.get('comment').value;
-    if (form.valid ) {
-      console.log(name + ratin + commentItem);
-      this.dish.comments.push({ author: name, comment: commentItem, rating : ratin, date: Date().toString()});
+  onFormValidation(validity: string) {
+    switch (validity) {
+      case 'VALID':
+        const form = this.commentForm;
+        const name = form.get('name');
+        const ratin = form.get('rating');
+        const commentItem = form.get('comment');
+        if (name.touched && commentItem.touched ){
+          const lastcomment = this.dish.comments.filter(d => d.date === '');
+          if (lastcomment.length === 0){
+            this.dish.comments.push({ author: name.value, comment: commentItem.value, rating : ratin.value, date: '' });
+          }
+      }
+        break;
+      case 'INVALID':
+        // tslint:disable-next-line: triple-equals
+        if (this.dish != null){
+        this.dish.comments.filter(removeLastItemArray);
+        }
+        break;
+    }
+
+    function removeLastItemArray() {
+      return '';
     }
   }
 }

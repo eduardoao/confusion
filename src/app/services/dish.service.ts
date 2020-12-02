@@ -1,32 +1,52 @@
+import { ProcessHTTPMsgService } from './process-httpmsg.service';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 
 import { Dish } from './../shared/dish';
-import { DISHEs} from '../shared/dishers';
-import { promise } from 'protractor';
+import { baseURL } from '../shared/baseurl';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class DishService {
 
-  constructor() { }
+  constructor(private http: HttpClient, private processHTTPMsgService: ProcessHTTPMsgService) { }
 
-  getDishIds(): Observable<string[] | any> {
-    return of(DISHEs.map(dish => dish.id ));
+  getDishIds(): Observable<number[] | any> {
+    return this.getDishes()
+    .pipe(map(dishes => dishes.map(dish => dish.id)))
+    .pipe(catchError(error => error));
   }
 
   getDishes(): Observable<Dish[]> {
-    return of(DISHEs).pipe(delay(2000));
+    return this.http.get<Dish[]>(baseURL + 'dishes')
+    .pipe(catchError(this.processHTTPMsgService.handleError));
   }
 
   getDish(id: string): Observable<Dish> {
-    return of(DISHEs.filter((dish) => (dish.id === id))[0]).pipe(delay(2000));
+    return this.http.get<Dish>(baseURL + 'dishes/' + id)
+    .pipe(catchError(this.processHTTPMsgService.handleError));
   }
 
   getFeaturedDish(): Observable<Dish> {
-    return of(DISHEs.filter((dish) => dish.featured)[0]).pipe(delay(2000));
+    return this.http.get<Dish[]>(baseURL + 'dishes?featured=true')
+    .pipe(map(dishes => dishes[0]))
+    .pipe(catchError(this.processHTTPMsgService.handleError));
+  }
+
+  putDish(dish: Dish): Observable<Dish> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+    return this.http.put<Dish>(baseURL + 'dishes/' + dish.id, dish, httpOptions)
+      .pipe(catchError(this.processHTTPMsgService.handleError));
+
   }
 
 }
